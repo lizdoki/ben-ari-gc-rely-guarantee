@@ -1,0 +1,13 @@
+# local tools, not part of the mechanisation
+watch.sh
+phase0/
+
+# build output
+build.log
+build.request
+logs/
+
+# editor and macOS files
+.DS_Store
+\#*\#
+*~

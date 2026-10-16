@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: >-
+  If you use this mechanisation or the ideas in it, please cite the thesis
+  below.
+title: >-
+  Isabelle/HOL mechanisation of a rely/guarantee proof of the Ben-Ari
+  concurrent garbage collector
+type: software
+authors:
+  - given-names: Liz
+    family-names: Yevdokimov
+license: BSD-3-Clause
+date-released: 2026-10-16
+keywords:
+  - Isabelle/HOL
+  - formal verification
+  - rely/guarantee
+  - concurrency
+  - garbage collection
+preferred-citation:
+  type: thesis
+  title: Concurrency Verification Using a Rely/Guarantee Approach
+  authors:
+    - given-names: Liz
+      family-names: Yevdokimov
+  thesis-type: Bachelor of Philosophy (Honours) thesis
+  institution:
+    name: The Australian National University
+  year: 2025
+  month: 11
+  notes: Revised version, October 2026.
