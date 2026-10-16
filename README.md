@@ -1,12 +1,8 @@
 # Mechanisation of the Ben-Ari garbage collector verification (Isabelle/HOL)
 
 > [!NOTE]
-> **Authorship.** The ideas formalised here are my own and come from my thesis: the
-> Collector's rely condition, the invariants, the specifications and the structure of the
-> proofs. Turning them into Isabelle/HOL was done with heavy use of AI assistance.
-> Isabelle is a proof assistant that checks every proof, so the proofs are shown to be
-> correct without needing to trust the AI. What a reader should check is that the
-> Isabelle statements say what the thesis says; `MAPPING.md` lists them result by result.
+> **Authorship.** The ideas formalised here are my own and come from my thesis. 
+> Turning them into Isabelle/HOL was done with heavy use of AI assistance.
 
 Isabelle2024 theories mechanising Chapter 4 of
 *Concurrency Verification Using a Rely/Guarantee Approach* (L. Yevdokimov, ANU Honours thesis,
