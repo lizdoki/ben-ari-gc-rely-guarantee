@@ -86,9 +86,9 @@ in parallel (§4.2–4.6).** No code.
 | §4.8.2 Lemma 13, Theorem 4 | 2a_Collector/4.8.2_Unmark | GC_Unmark | `lemma13_so_farU_trans`, `theorem4_post_Unmark` |
 | §4.8.2 Unmark meets its specification | 2a_Collector/4.8.2_Unmark | GC_Unmark_Sat | `Unmark_sat` |
 | §4.8.3 Lemma 14, Theorem 5 | 2a_Collector/4.8.3-4.8.4_Sweep_Safety | GC_Sweep | `lemma14_so_farS_trans`, `theorem5_post_Sweep` |
-| §4.8.4 Lemmas 15–19, Theorem 6, Corollary 2 | 2a_Collector/4.8.3-4.8.4_Sweep_Safety | GC_Safety | `lemma15_env_inv_safe`, `theorem6_safety`, `corollary2_step_guar`, … |
+| §4.8.4 Lemmas 15–19, Sublemma 1, Theorem 6, Corollary 2 | 2a_Collector/4.8.3-4.8.4_Sweep_Safety | GC_Safety | `lemma15_env_inv_safe`, `theorem6_safety`, `sublemma1_agree_reach`, `corollary2_step_guar`, … |
 | §4.8.3–4.8.4 Add-to-free and Sweep meet their specifications | 2a_Collector/4.8.3-4.8.4_Sweep_Safety | GC_Sweep_Sat | `AddToFree_sat`, `Sweep_sat` |
-| §4.8.5 Sublemma 1, Lemma 20, Theorem 7 | 2a_Collector/4.8.5_Collector | GC_Collector_Post | `sublemma1_closure`, `lemma20_reach_marked_bound`, `theorem7_post_Collector` |
+| §4.8.5 Sublemma 2, Lemma 20, Theorem 7 | 2a_Collector/4.8.5_Collector | GC_Collector_Post | `sublemma2_closure`, `lemma20_reach_marked_bound`, `theorem7_post_Collector` |
 | §4.8.5 the Collector meets its specification | 2a_Collector/4.8.5_Collector | GC_Collector | `Collector_sat` |
 | §4.6 the Mutator meets its specification | 2b_Mutator | GC_Mutator | `Redirect_sat`, `Malloc_sat`, `Zap_sat`, `Mutator_sat` |
 | §4.5.5 Collector ∥ Mutator for the code | 3_System | GC_System | `Collector_par_Mutator`, `system_safety`, `system_post_Collector` |

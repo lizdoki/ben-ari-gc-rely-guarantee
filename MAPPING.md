@@ -88,12 +88,12 @@ Status column: ✔ checked by Isabelle2024 (full session build, no `sorry`, 16 O
 | invA holds on entry to Add-to-free (§4.8.4, after Lemma 16) | `invA_init` | GC_Safety | ✔ |
 | Lemma 17 / 18 | `lemma17_env_invA`, `lemma18_prog_invA`; in Add-to-free: `A_J_stable`, `A_null_sat` | GC_Safety, GC_Sweep_Sat | ✔ |
 | Theorem 6 (Safety) | `theorem6_safety`; for the Collector's code: `Collector_safe`; for Collector ∥ Mutator: `system_safety` | GC_Safety, GC_Collector, GC_System | ✔ |
-| Lemma 19 | `lemma19_edges_unchanged`, `lemma19_reach_unchanged` | GC_Safety | ✔ |
-| guar-Collector keeps reach(roots, hp), from its last conjunct (beyond the thesis) | `agree_reach`, `guar_Collector_reach` | GC_Safety | ✔ |
+| Lemma 19 | first conjunct: `lemma19_edges_unchanged`; second conjunct: `lemma19_reach_unchanged` | GC_Safety | ✔ |
+| Sublemma 1 | `sublemma1_agree_reach`; applied to guar-Collector (proof of Corollary 2): `guar_Collector_reach` | GC_Safety | ✔ |
 | Corollary 2 | `corollary2_step_guar`, `corollary2_guar_trans`; for the Collector's code: `C_step_guar` | GC_Safety, GC_Collector | ✔ |
 | Every step of the Collector's code is a step-Collector step | `C_step` in `Unmark_C`, `Mark_C`, `Sweep_C` | GC_Collector | ✔ |
 | Lemma 20 | `lemma20_reach_marked_bound` | GC_Collector_Post | ✔ |
-| Sublemma 1 | `sublemma1_closure` (single-step form: `sublemma1_step`); what Unmark guarantees: `no_new_ptr` in `U_post` | GC_Collector_Post, GC_Unmark, GC_Unmark_Sat | ✔ |
+| Sublemma 2 | `sublemma2_closure` (single-step form: `sublemma2_step`); what Unmark guarantees: `no_new_ptr` in `U_post` | GC_Collector_Post, GC_Unmark, GC_Unmark_Sat | ✔ |
 | Theorem 7 | `theorem7_post_Collector`; for the Collector's code: `Collector_sat` (post condition `C_post`); for Collector ∥ Mutator: `system_post_Collector` | GC_Collector_Post, GC_Collector, GC_System | ✔ |
 | Theorem 8 / Lemma 22 (App. B.3, informal) | invB is part of the invariants of Mark and its loops (`M_pre`, `M_inv`, `P_inv`), kept by Lemma 2 (`envs_invB`) and Lemma 4 (`guar_Mark_invB`); outside Mark s = {} and invB holds trivially (`invB_empty`) | GC_Invariant, GC_Code, GC_Mark_Sat | ✔ |
 | The VDM rules (App. B.1): consequence, sequential composition, while; atomic statements and conditionals | `rule_conseq`, `rule_weaken`, `rule_seq`, `rule_while`, `rule_repeat`, `rule_basic`, `rule_cond`, `rule_if`, `rule_seq_basic`, `rule_trace`, `rule_trace_h`, `rule_inv` | RG_VDM | ✔ |
@@ -195,39 +195,31 @@ main results, with the thesis sentence each corresponds to.
    possible-values notation of Theorems 5 and 7 is given meaning.
 8. **Mark-kids** `hp(x,i)` is guarded (`{b. hp σ (x,i) = Some b}`), matching the
    set-comprehension form of the thesis.
-9. **guar-Collector strengthened.** The Mutator relies on guar-Collector (§4.6). Its
-   guarantees and post conditions need that the Collector never changes a pointer out of
-   a reachable node: Redirect's marking step and Malloc's free step require hp(a,i) = b.
-   Reachability alone does not give this, so guar-Collector has the conjunct
-   (reach(roots,hp) × Index) ◁ hp′ = (reach(roots,hp) × Index) ◁ hp instead of
-   reach(roots,hp′) = reach(roots,hp), which follows from it (`agree_reach`). Every
-   program step satisfies it (Lemma 19) and it is transitive (Corollary 2). `R_mid_stable`
-   and `Ml_mid_stable` are where the Mutator uses it.
-10. **The Collector's guarantee in Isabelle** (`guar_C`) is guar-Collector together with
-    inv-Σ after the step and Bad(s′,σ′) ⊆ Bad(s,σ) (Lemma 3). The Mutator relies only
-    on guar-Collector; the other two conjuncts are what the composition needs (item 2
-    at the end of §4.5.5). The Collector's pre condition (`C_pre`) also states inv-Σ.
-11. **The Mutator's pre condition** (`Mut_pre`) is new-risk = {}, together with inv-Σ
+9. **The Collector's guarantee in Isabelle** (`guar_C`) is guar-Collector together with
+   inv-Σ after the step and Bad(s′,σ′) ⊆ Bad(s,σ) (Lemma 3). The Mutator relies only
+   on guar-Collector; the other two conjuncts are what the composition needs (item 2
+   at the end of §4.5.5). The Collector's pre condition (`C_pre`) also states inv-Σ.
+10. **The Mutator's pre condition** (`Mut_pre`) is new-risk = {}, together with inv-Σ
     and free ∩ reach(roots, hp) = {}, which hold between the Mutator's operations
     (§4.4.2). The operations are proved with post condition `Mut_inv` (the same
     predicate), what the next operation needs. What holds between the two atomic steps
     of Redirect and of Malloc is `R_mid` and `Ml_mid`.
-12. **guar-Mutator is reflexive.** `guar_Mutator` has the disjunct σ′ = σ ∧ new-risk′ =
+11. **guar-Mutator is reflexive.** `guar_Mutator` has the disjunct σ′ = σ ∧ new-risk′ =
     new-risk, for the Mutator's steps that change no shared variable (choosing an
     operation). Rely and guarantee conditions are reflexive (§2.2);
     `section_455_obligation` covers this case.
-13. **Add-to-free's post condition.** x ∈ free′ and kids(x, hp′) = {} are not satisfied
+12. **Add-to-free's post condition.** x ∈ free′ and kids(x, hp′) = {} are not satisfied
     despite interference, since the Mutator may allocate x as soon as it is free. The
     post condition in Isabelle (`A_post`) is that x is marked and was in free at some
     point during Add-to-free (x ∈ f for some f in free~), which is what Sweep's post
     condition needs. §4.8.3 makes this point for Sweep.
-14. **Termination.** The rules of RG_VDM are for partial correctness: `rule_while` needs
+13. **Termination.** The rules of RG_VDM are for partial correctness: `rule_while` needs
     so-far transitive but not well-founded. That so-far is well-founded, so each loop
     terminates, is proved separately for each loop (`lemma5_so_farMk_wf`,
     `lemma6_so_farP_wf`, `lemma10_so_farM_wf`, `lemma13_so_farU_wf`,
     `lemma14_so_farS_wf`). For Mark the relation is restricted to iterations that start
     where testM holds, as in the thesis's argument.
-15. **The parallel rule.** `rg_parallel` allows rely and guarantee conditions to refer
+14. **The parallel rule.** `rg_parallel` allows rely and guarantee conditions to refer
     to a component's own private variables (rely-Collector refers to s), and requires
     the side conditions only in states satisfying a coupling predicate J that both
     guarantees preserve. Here J is consistent(s, σ). This is the quantification over an

@@ -3,7 +3,7 @@
       Lemma 13 / Theorem 4 -- so-far transitive and well-founded, post
                               condition
     Also, beyond the thesis, what Unmark guarantees about pointers, which
-    Sublemma 1 (Section 4.8.5) uses (no_new_ptr).  GC_Unmark_Sat uses these
+    Sublemma 2 (Section 4.8.5) uses (no_new_ptr).  GC_Unmark_Sat uses these
     results to prove that Unmark meets its specification.
 
     HOW TO READ THE LABELS.  Each definition and theorem below, or each group
@@ -81,7 +81,7 @@ theorem theorem4_post_Unmark:
 
 text \<open>Beyond the thesis: what Unmark guarantees about pointers, as a relation
       between its first and last states: no pointer out of the old free or
-      reachable region points outside it.  Sublemma 1 (Section 4.8.5) uses
+      reachable region points outside it.  Sublemma 2 (Section 4.8.5) uses
       it; GC_Unmark_Sat proves it as part of Unmark's post condition
       (\<open>U_post\<close>).\<close>
 

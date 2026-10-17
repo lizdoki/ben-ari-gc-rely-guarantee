@@ -40,7 +40,7 @@ text \<open>Thesis: the specification of Unmark (Section 4.8.2, Appendix C):
     - the post condition is post-Unmark (GC_Unmark), together with two facts
       that Section 4.8.5 uses for Lemma 20: garbage does not decrease during
       Unmark (so-farU), and no pointer out of the old free or reachable
-      region points into the old garbage (Sublemma 1; no_new_ptr in
+      region points into the old garbage (Sublemma 2; no_new_ptr in
       GC_Safety).\<close>
 
 definition U_pre :: "('a,'i) cconf \<Rightarrow> bool" where
@@ -557,7 +557,7 @@ proof (rule rule_basicC)
   qed
 qed (auto simp: U_guar_def U_reset_post_def U_env_refl)
 
-text \<open>Thesis: the property of the whole of Unmark that Sublemma 1 (Section
+text \<open>Thesis: the property of the whole of Unmark that Sublemma 2 (Section
   4.8.5) relies on: "by applying the rely condition to each environment step
   of Unmark and using that garbage never decreases during this phase
   (so-farU) and that the Collector does not modify hp during Unmark", no

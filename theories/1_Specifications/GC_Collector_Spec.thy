@@ -105,11 +105,11 @@ definition env_step :: "('a \<times> 'i) set \<Rightarrow> ('a,'i) state \<Right
 section \<open>The guarantee condition of the Collector (Section 4.4)\<close>
 
 text \<open>Thesis: guar-Collector (Section 4.4), which is also the rely condition of
-  the Mutator (Section 4.6), with its last conjunct in a stronger form:
+  the Mutator (Section 4.6).  Its last conjunct is
   (reach(roots, hp) \<times> Index) \<lhd> hp' = (reach(roots, hp) \<times> Index) \<lhd> hp, that
   is, no pointer out of a reachable node changes.  It implies
-  reach(roots, hp') = reach(roots, hp) (agree_reach, GC_Safety).  MAPPING.md,
-  item 9, explains why the Mutator needs the stronger form.\<close>
+  reach(roots, hp') = reach(roots, hp) by Sublemma 1 (sublemma1_agree_reach,
+  GC_Safety).\<close>
 
 definition guar_Collector :: "('a,'i) state \<Rightarrow> ('a,'i) state \<Rightarrow> bool" where
   "guar_Collector \<sigma> \<sigma>' \<longleftrightarrow> roots \<sigma>' = roots \<sigma> \<and>

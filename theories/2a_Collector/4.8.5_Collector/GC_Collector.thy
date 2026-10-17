@@ -168,7 +168,7 @@ text \<open>Thesis: Theorem 7 (Collector's post condition): with \<sigma>U, \<si
   where "the possible values between \<sigma>S and \<sigma>U' are contained within the
   possible values between \<sigma>U and \<sigma>U'" (hist_ok).  Lemma 20 also uses, from
   Unmark, that no pointer leads from the old free or reachable region into
-  the old garbage (Sublemma 1).\<close>
+  the old garbage (Sublemma 2).\<close>
 
 theorem Collector_sat:
   "coll_sat C_pre (Collector :: ('a::finite,'i::finite) ccom) (guar_C s) C_post"

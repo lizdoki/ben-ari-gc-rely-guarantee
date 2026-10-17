@@ -1,6 +1,6 @@
 (*  GC_Collector_Post: Section 4.8.5 of the thesis -- the Collector's post
     condition.
-      Sublemma 1 -- after Unmark, nothing reachable from the old free or
+      Sublemma 2 -- after Unmark, nothing reachable from the old free or
                     reachable region is old garbage
       Lemma 20   -- upper bound of the region reachable from marked nodes
       Theorem 7  -- post-Collector: all garbage present at the start of a
@@ -21,11 +21,11 @@ begin
 
 section \<open>The Collector's post condition (Section 4.8.5)\<close>
 
-text \<open>Thesis: Sublemma 1 (used by Lemma 20), single-step form: an environment step
+text \<open>Thesis: Sublemma 2 (used by Lemma 20), single-step form: an environment step
       never creates a pointer from the free or reachable region into (old)
       garbage.\<close>
 
-lemma sublemma1_step:
+lemma sublemma2_step:
   assumes inv: "inv_state \<sigma>" and R: "rely_Collector s \<sigma> \<sigma>'"
     and x: "x \<in> free \<sigma> \<union> reach (roots \<sigma>) (hp \<sigma>)" and hb: "hp \<sigma>' (x,i) = Some b"
   shows "b \<notin> garbage \<sigma>"
@@ -47,11 +47,11 @@ next
   then show ?thesis using R hb unfolding rely_Collector_def by blast
 qed
 
-text \<open>Thesis: Sublemma 1: with \<sigma> and \<sigma>' the initial and final states of Unmark,
+text \<open>Thesis: Sublemma 2: with \<sigma> and \<sigma>' the initial and final states of Unmark,
     reach(free \<union> reach(roots, hp), hp') \<subseteq> free \<union> reach(roots, hp).
   Here the property of Unmark used is no_new_ptr (GC_Unmark).\<close>
 
-theorem sublemma1_closure:
+theorem sublemma2_closure:
   assumes "no_new_ptr \<sigma> \<sigma>'"
   shows "reach (free \<sigma> \<union> reach (roots \<sigma>) (hp \<sigma>)) (hp \<sigma>') \<subseteq> free \<sigma> \<union> reach (roots \<sigma>) (hp \<sigma>)"
 proof (rule reach_closed[OF subset_refl])
@@ -73,7 +73,7 @@ proof -
     using assms(1) unfolding post_Unmark_def garbage_def by blast
   then have "reach (marked \<sigma>') (hp \<sigma>') \<subseteq> reach (free \<sigma> \<union> reach (roots \<sigma>) (hp \<sigma>)) (hp \<sigma>')"
     by (rule reach_mono)
-  with sublemma1_closure[OF assms(2)] show ?thesis by blast
+  with sublemma2_closure[OF assms(2)] show ?thesis by blast
 qed
 
 text \<open>Thesis: post-Collector (Section 4.4): garbage \<subseteq> \<Union>F, where F is the set of

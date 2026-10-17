@@ -7,6 +7,8 @@
       Theorem 6           -- safety: a program step only frees garbage
       Lemma 19            -- a program step does not change any pointer out of
                              a reachable node, nor reachability
+      Sublemma 1          -- heaps that agree on the pointers out of all
+                             reachable nodes have the same reachable nodes
       Corollary 2         -- every program step satisfies guar-Collector, and
                              guar-Collector is transitive
 
@@ -116,9 +118,11 @@ proof -
   qed
 qed
 
-text \<open>Thesis: Lemma 19.  A single program step does not change any pointer out of a
-      reachable node (Add-to-free(x) removes only pointers of \<open>x\<close>, and \<open>x\<close> is
-      unreachable by invA), nor which nodes are reachable.\<close>
+text \<open>Thesis: Lemma 19, first conjunct.  A single program step does not change any
+      pointer out of a reachable node (Add-to-free(x) removes only pointers of
+      \<open>x\<close>, and \<open>x\<close> is unreachable by invA):
+        step-Collector(\<sigma>, \<sigma>') \<Rightarrow>
+          (reach(roots, hp) \<times> Index) \<lhd> hp' = (reach(roots, hp) \<times> Index) \<lhd> hp.\<close>
 
 theorem lemma19_edges_unchanged:
   assumes S: "step_Collector s \<sigma> s' \<sigma>'" and eR: "fst e \<in> reach (roots \<sigma>) (hp \<sigma>)"
@@ -150,8 +154,12 @@ proof -
   qed
 qed
 
-text \<open>Thesis: Lemma 19 as stated in the thesis (a program step does not change
-  reachability): step-Collector(\<sigma>, \<sigma>') \<Rightarrow> reach(roots, hp') = reach(roots, hp).\<close>
+text \<open>Thesis: Lemma 19, second conjunct.  A single program step does not change
+  which nodes are reachable:
+    step-Collector(\<sigma>, \<sigma>') \<Rightarrow> reach(roots, hp') = reach(roots, hp).
+  The thesis derives it from the first conjunct by Sublemma 1; here it is
+  proved directly (Add-to-free removes only pointers out of an unreachable
+  node).\<close>
 
 theorem lemma19_reach_unchanged:
   assumes S: "step_Collector s \<sigma> s' \<sigma>'"
@@ -180,11 +188,13 @@ proof -
   qed
 qed
 
-text \<open>Beyond the thesis: heaps that agree on the pointers out of the nodes
-      reachable in one of them have the same reachable nodes.  With the last
-      conjunct of guar-Collector, this gives reach(roots, hp') = reach(roots, hp).\<close>
+text \<open>Thesis: Sublemma 1 (heaps that agree on the pointers out of all reachable
+      nodes have the same reachable nodes):
+        (reach(roots, hp) \<times> Index) \<lhd> hp' = (reach(roots, hp) \<times> Index) \<lhd> hp
+          \<Rightarrow> reach(roots, hp') = reach(roots, hp),
+      stated here for any set of roots R.\<close>
 
-lemma agree_reach:
+lemma sublemma1_agree_reach:
   assumes E: "\<forall>e. fst e \<in> reach R h \<longrightarrow> h' e = h e"
   shows "reach R h' = reach R h"
 proof
@@ -217,9 +227,8 @@ next
   qed
 qed
 
-text \<open>Beyond the thesis: guar-Collector keeps reach(roots, hp).  This is the
-  conjunct reach(roots, hp') = reach(roots, hp) that the last conjunct of
-  guar-Collector replaces (Section 4.4); it follows by agree_reach.\<close>
+text \<open>Thesis: in the proof of Corollary 2, Sublemma 1 applied to the last
+  conjunct of guar-Collector: guar-Collector keeps reach(roots, hp).\<close>
 
 lemma guar_Collector_reach:
   assumes G: "guar_Collector \<sigma> \<sigma>'"
@@ -228,7 +237,7 @@ proof -
   from G have R: "roots \<sigma>' = roots \<sigma>"
     and E: "\<forall>e. fst e \<in> reach (roots \<sigma>) (hp \<sigma>) \<longrightarrow> hp \<sigma>' e = hp \<sigma> e"
     unfolding guar_Collector_def by blast+
-  from agree_reach[OF E] R show ?thesis by simp
+  from sublemma1_agree_reach[OF E] R show ?thesis by simp
 qed
 
 text \<open>Thesis: Corollary 2.  Every program step satisfies the guarantee of the
