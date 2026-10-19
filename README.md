@@ -4,7 +4,7 @@
 > **Authorship.** The ideas formalised here are my own and come from my thesis. 
 > Turning them into Isabelle/HOL was done with heavy use of AI assistance.
 
-This repository mechanises in Isabelle/HOL the rely/guarantee proof of safety of Ben-Ari's on-the-fly garbage collector from Chapter 4 of my thesis, *Concurrency Verification Using a Rely/Guarantee Approach* (L. Yevdokimov, ANU Honours thesis,
+This repository mechanises in Isabelle/HOL the rely/guarantee proof of safety of Ben-Ari's on-the-fly garbage collector from Chapter 4 of my thesis, [*Concurrency Verification Using a Rely/Guarantee Approach*](thesis.pdf) (L. Yevdokimov, ANU Honours thesis,
 revised version of October 2026; theorem numbering follows that version). The Collector is proved correct under its own rely condition, for every heap and any environment satisfying that rely condition. The Mutator is proved to satisfy the rely condition, and the two are composed with the parallel rule. 
 
 To the best of my knowledge, this is the first complete rely/guarantee proof of safety for this algorithm, and the first mechanised one. Earlier mechanised proofs either use non-compositional methods, or do not establish the Collector's correctness under a rely condition; see §5.4 of the thesis.
@@ -137,6 +137,7 @@ Isabelle proof). `MAPPING.md` lists every thesis result with its Isabelle name.
 - `ROOT` — session `GC_Mechanisation` (based on HOL); lists the folders and the theories in
   reading order.
 - `theories/` — the theories, in the folders above.
+- `thesis.pdf` — the revised thesis (October 2026).
 - `LICENSE` — BSD 3-Clause.
 - `CITATION.cff` — how to cite this work (GitHub shows it as "Cite this repository").
 
