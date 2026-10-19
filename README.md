@@ -1,4 +1,4 @@
-# Mechanisation of the Ben-Ari garbage collector verification (Isabelle/HOL)
+# Rely/guarantee verification of the Ben-Ari garbage collector in Isabelle/HOL
 
 > [!NOTE]
 > **Authorship.** The ideas formalised here are my own and come from my thesis. 
