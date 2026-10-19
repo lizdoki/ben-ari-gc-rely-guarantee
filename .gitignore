@@ -1,6 +1,7 @@
 # local tools, not part of the mechanisation
 watch.sh
 phase0/
+proof_check/
 
 # build output
 build.log
