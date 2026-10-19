@@ -13,6 +13,34 @@ meets its specification, and so Collector ∥ Mutator is correct. **For the big 
 with `theories/GC_Results.thy`**: it restates the main results with their full Isabelle
 statements, each with the thesis sentence it corresponds to and where its proof is.
 
+## Key results
+
+All of these are in `theories/GC_Results.thy`.
+
+**The Collector is correct under its rely condition.** The results below hold for every heap
+and for *any* environment whose steps satisfy rely-Collector (with Assumption 1 and inv-Σ),
+not only for the Mutator of §4.6.
+
+| Result | Thesis | Isabelle |
+|---|---|---|
+| Every step of the Collector only adds garbage to free (safety) | Theorem 6, Corollary 2 | `result2a_Collector_safety` |
+| An iteration of Propagate in which marked does not change ends with every reachable node marked | Theorem 2 | `result2b_Propagate_round` |
+| When Mark finishes, every reachable node is marked | Theorem 3 | `result2c_Mark_marks_reachable` |
+| The Collector meets its specification: {pre-Collector, rely-Collector} Unmark; Mark; Sweep {guar-Collector, post-Collector} | §4.7–4.8, Theorem 7 | `result2_Collector_meets_spec` |
+
+**The Mutator meets its specification**, {new-risk = {}, guar-Collector} Mutator
+{guar-Mutator, true} (§4.6): `result3_Mutator_meets_spec`.
+
+**The two together are correct** (§4.5.5):
+
+| Result | Isabelle |
+|---|---|
+| Any Collector and any Mutator meeting the two specifications are correct in parallel | `result1_any_Collector_par_any_Mutator` |
+| Collector ∥ Mutator is correct, for the code | `result4_Collector_par_Mutator` |
+| In every run, no node in use is ever freed | `result5_safety` |
+| In every run in which the Collector finishes its cycle, every node that was garbage at the start was in free at some point during the cycle (post-Collector) | `result6_post_Collector` |
+| In every run, consistent(s, σ) and inv-Σ hold in every state | `result7_consistent` |
+
 ## How the theories are organised
 
 The folders in `theories/` follow the three parts of the argument. Each folder has a short
@@ -92,7 +120,7 @@ in parallel (§4.2–4.6).** No code.
 | §4.8.5 the Collector meets its specification | 2a_Collector/4.8.5_Collector | GC_Collector | `Collector_sat` |
 | §4.6 the Mutator meets its specification | 2b_Mutator | GC_Mutator | `Redirect_sat`, `Malloc_sat`, `Zap_sat`, `Mutator_sat` |
 | §4.5.5 Collector ∥ Mutator for the code | 3_System | GC_System | `Collector_par_Mutator`, `system_safety`, `system_post_Collector` |
-| the main results, restated | (top of `theories/`) | GC_Results | `result1_any_Collector_par_any_Mutator` … `result7_consistent` |
+| the main results, restated | (top of `theories/`) | GC_Results | `result1_any_Collector_par_any_Mutator` … `result7_consistent`, with `result2a_Collector_safety`, `result2b_Propagate_round`, `result2c_Mark_marks_reachable` |
 
 For each subsection of §4.8 there are two theories: first the thesis's lemmas and theorems
 for that subsection, in the thesis's order, then the proof that that part of the code meets

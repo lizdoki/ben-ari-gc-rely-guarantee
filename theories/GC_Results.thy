@@ -12,7 +12,8 @@
                          and any Mutator meeting them are correct in
                          parallel (Sections 4.2-4.6);
       2a_Collector       Part 2: the Collector's code meets its
-                         specification (Sections 4.7 and 4.8);
+                         specification (Sections 4.7 and 4.8); results 2a-2c
+                         below restate what this gives under rely-Collector;
       2b_Mutator         Part 2: the Mutator's code meets its specification
                          (Section 4.6);
       3_System           Part 3: the two together, for the code.
@@ -77,6 +78,63 @@ text \<open>Thesis: the Collector meets its specification (Sections 4.7 and 4.8)
 theorem result2_Collector_meets_spec:
   "coll_sat C_pre (Collector :: ('a::finite,'i::finite) ccom) (guar_C cvars.s) C_post"
   by (rule Collector_sat)
+
+section \<open>Part 2 in detail: the Collector is correct under rely-Collector\<close>
+
+text \<open>Thesis: what the Collector guarantees under its rely condition (Sections
+  4.7 and 4.8).  The three results below are read off the quadruples proved for
+  the Collector's code, and hold for every heap and for any environment whose
+  steps satisfy rely-Collector (with Assumption 1 and inv-\<Sigma>, env_step), not
+  only for the Mutator of Section 4.6.
+  creach hC (rely_C cvars.s) c k0 c' k says that some computation of the program
+  c from the configuration k0, in which every environment step satisfies
+  rely-Collector, reaches the configuration k with c' left to run (c' = Skip
+  when c has finished).\<close>
+
+text \<open>Thesis: Theorem 6 (safety) and Corollary 2, under rely-Collector: every step
+  of the Collector only adds garbage to free.  Proved from Collector_sat, whose
+  guarantee guar_C contains guar-Collector.\<close>
+
+theorem result2a_Collector_safety:
+  assumes pre: "C_pre k0"
+    and run: "creach hC (rely_C cvars.s) (Collector :: ('a::finite,'i::finite) ccom) k0 c k"
+    and step: "cstep c k c' k'"
+  shows "free (snd k') - free (snd k) \<subseteq> garbage (snd k)"
+proof -
+  have "k' = k \<or> guar_C cvars.s k k'"
+    by (rule vdmD_guar[OF Collector_sat pre run step])
+  then show ?thesis unfolding guar_C_def guar_Collector_def by auto
+qed
+
+text \<open>Thesis: Theorem 2, under rely-Collector: when an iteration of Propagate
+  finishes and marked has not changed during it, every reachable node is
+  marked.  Proved from Propagate_sat (GC_Mark_Sat).\<close>
+
+theorem result2b_Propagate_round:
+  assumes pre: "P_pre k0"
+    and run: "creach hC (rely_C cvars.s) (Propagate :: ('a::finite,'i::finite) ccom) k0 Skip k"
+    and same: "marked (snd k) = marked (snd k0)"
+  shows "reach (roots (snd k)) (hp (snd k)) \<subseteq> marked (snd k)"
+proof -
+  obtain l0 \<sigma>0 where k0: "k0 = (l0, \<sigma>0)" by (cases k0)
+  obtain l \<sigma> where k: "k = (l, \<sigma>)" by (cases k)
+  have "P_post k0 k" by (rule vdmD_post[OF Propagate_sat pre run])
+  with k0 k same show ?thesis by (simp add: P_post_def post_Propagate_def)
+qed
+
+text \<open>Thesis: Theorem 3, under rely-Collector: when Mark finishes, every
+  reachable node is marked.  Proved from Mark_sat (GC_Mark_Sat).\<close>
+
+theorem result2c_Mark_marks_reachable:
+  assumes pre: "M_pre k0"
+    and run: "creach hC (rely_C cvars.s) (Mark :: ('a::finite,'i::finite) ccom) k0 Skip k"
+  shows "reach (roots (snd k)) (hp (snd k)) \<subseteq> marked (snd k)"
+proof -
+  obtain l0 \<sigma>0 where k0: "k0 = (l0, \<sigma>0)" by (cases k0)
+  obtain l \<sigma> where k: "k = (l, \<sigma>)" by (cases k)
+  have "M_post k0 k" by (rule vdmD_post[OF Mark_sat pre run])
+  with k0 k show ?thesis by (simp add: M_post_def post_Mark_def)
+qed
 
 text \<open>Thesis: the Mutator meets its specification (Section 4.6):
     {new-risk = {}, guar-Collector} Mutator {guar-Mutator, true}

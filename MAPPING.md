@@ -10,6 +10,9 @@ Status column: ✔ checked by Isabelle2024 (full session build, no `sorry`, 16 O
 |---|---|---|---|
 | Part 1: for any Collector meeting the Collector's specification and any Mutator meeting the Mutator's, Collector ∥ Mutator is correct (the parallel rule with the obligations of §4.5.5 and coupling consistent(s, σ)) | `Collector_par_Mutator_abstract` | GC_Parallel | ✔ |
 | The Collector meets its specification: {pre-Collector, rely-Collector} Unmark; Mark; Sweep {guar-Collector, post-Collector} | `Collector_sat` | GC_Collector | ✔ |
+| Under rely-Collector, for every heap: every step of the Collector only adds garbage to free (Theorem 6, Corollary 2) | `result2a_Collector_safety` | GC_Results | ✔ |
+| Under rely-Collector: an iteration of Propagate in which marked does not change ends with every reachable node marked (Theorem 2) | `result2b_Propagate_round` | GC_Results | ✔ |
+| Under rely-Collector: when Mark finishes, every reachable node is marked (Theorem 3) | `result2c_Mark_marks_reachable` | GC_Results | ✔ |
 | The Mutator meets its specification: {new-risk = {}, guar-Collector} Mutator {guar-Mutator, true} | `Mutator_sat` | GC_Mutator | ✔ |
 | So Collector ∥ Mutator is correct: the abstract theorem applied to the two programs | `Collector_par_Mutator` | GC_System | ✔ |
 
