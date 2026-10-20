@@ -164,7 +164,7 @@ proof -
   have hne: "hp \<sigma>' e \<noteq> hp \<sigma> e"
   proof
     assume "hp \<sigma>' e = hp \<sigma> e"
-    with E have "\<forall>e'. hp \<sigma>' e' = hp \<sigma> e'" by metis
+    with E have "\<forall>e'. hp \<sigma>' e' = hp \<sigma> e'" by auto
     then have "hp \<sigma>' = hp \<sigma>" by (simp add: fun_eq_iff)
     with assms(2) show False by simp
   qed

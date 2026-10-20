@@ -383,7 +383,7 @@ text \<open>Mechanisation only: conjunct (4.1) of rely-Collector: pointers out o
 lemma envs_garbage_edges:
   assumes "env_step S \<sigma> \<sigma>' \<or> \<sigma>' = \<sigma>" and "y \<in> garbage \<sigma>"
   shows "hp \<sigma>' (y,j) = hp \<sigma> (y,j)"
-  using assms unfolding env_step_def rely_Collector_def by fastforce
+  using assms unfolding env_step_def rely_Collector_def by auto
 
 text \<open>Mechanisation only: the same facts for an environment step alone.\<close>
 

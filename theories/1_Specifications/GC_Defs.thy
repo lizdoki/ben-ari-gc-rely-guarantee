@@ -108,7 +108,9 @@ proof (rule reach_closed)
   show "S \<subseteq> reach S h" by (rule reach_refl)
 next
   fix x i b assume "x \<in> reach S h" and "h' (x,i) = Some b"
-  then have "h (x,i) = Some b" using assms unfolding map_le_def by (metis domI)
+  have "(x,i) \<in> dom h" using \<open>h' (x, i) = Some b\<close> using assms map_le_implies_dom_le by blast
+  have "h' (x,i) = h (x,i)" using assms \<open>h' (x, i) = Some b\<close> unfolding map_le_def by blast
+  then have "h (x,i) = Some b" using \<open>h' (x, i) = Some b\<close> by simp
   with \<open>x \<in> reach S h\<close> show "b \<in> reach S h" by (rule reach_step)
 qed
 
